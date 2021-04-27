@@ -38,12 +38,13 @@ class _MyHomePageState extends State<MyHomePage> {
     SizeConfig().init(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(
+            title: Center(
+          child: Text(
             'Select a region',
             textAlign: TextAlign.center,
             style: TextStyle(color: grayColor),
           ),
-        ),
+        )),
         body: Container(
           width: SizeConfig.blockSizeHorizontal * 100,
           height: SizeConfig.blockSizeVertical * 100,
@@ -78,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(pageRouteBuilder());
+                    _navigateToCountriesScreen();
                   },
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 100,
@@ -101,29 +102,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ));
   }
 
-  PageRouteBuilder pageRouteBuilder() {
-    return PageRouteBuilder(
-      pageBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation) {
-        return CountryScreen();
-      },
-      transitionDuration: Duration(milliseconds: 500),
-      transitionsBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation, Widget child) {
-        return SlideTransition(
-          position: new Tween<Offset>(
-            begin: const Offset(1.0, 0.0),
-            end: Offset.zero,
-          ).animate(animation),
-          child: new SlideTransition(
-            position: new Tween<Offset>(
-              begin: Offset.zero,
-              end: const Offset(-1.0, 0.0),
-            ).animate(secondaryAnimation),
-            child: child,
-          ),
-        );
-      },
-    );
+  void _navigateToCountriesScreen(String region) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => CountryScreen(region)));
   }
 }
