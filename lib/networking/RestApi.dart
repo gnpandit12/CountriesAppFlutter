@@ -1,28 +1,36 @@
 import 'dart:convert';
 
 import 'package:countries_app_flutter/model/CountriesModel.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
-var apiUrl = Uri.parse('https://restcountries.eu/rest/v2/region/');
+Future<List<CountriesModel>> getCountriesFromRegion(String regionString) async {
+  print("Selected Region: ${regionString}");
 
-Future<CountriesModel> getCountriesFromRegion(String regionString) async {
-  Map region = {'region': regionString};
-  var body = json.encode(region);
-  var response = await http.post(apiUrl, body: body);
+  var _dio = new Dio();
+  var options = new Options();
+  options.contentType = 'application/json';
+  String url = "https://restcountries.eu/rest/v2/";
+  Map<String, String> qParams = {
+    'region': regionString,
+  };
 
-  CountriesModel countriesResponse;
+  var response =
+      await _dio.get(url, options: options, queryParameters: qParams);
+
+  print("Response: ${response}");
+  List<CountriesModel> countriesResponse;
 
   print("Response Code: ${response.statusCode.toString()}");
   if (response.statusCode == 200) {
     print("Response Successful!");
-    final Map parsed = json.decode(response.body);
-    countriesResponse = CountriesModel.fromJson(parsed);
+    final Map parsed = json.decode(response.data);
+    print("Post request map: ${parsed.toString()}");
+    countriesResponse = CountriesModel.fromJson(parsed) as List<CountriesModel>;
   } else {
     print("Response Failed!");
     throw Exception('Failed to fetch data');
   }
-  print("Api_Url: ${apiUrl.toString()}");
   print("Response status: ${response.statusCode.toString()}");
-  print("Response body: ${response.body.toString()}");
+  print("Response body: ${response.data.toString()}");
   return countriesResponse;
 }

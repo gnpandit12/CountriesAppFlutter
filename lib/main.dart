@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).push(pageRouteBuilder());
+                    _navigateToCountriesScreen('asia');
                   },
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 100,
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 InkWell(
                   onTap: () {
-                    _navigateToCountriesScreen();
+                    _navigateToCountriesScreen('europe');
                   },
                   child: Container(
                     width: SizeConfig.blockSizeHorizontal * 100,
